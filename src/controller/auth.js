@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport({
   host: 'smtp.mailtrap.io',
   port: 587,
   auth: {
-    user: 'e78c620341ece8',
-    pass: '9aedcae0c9072f',
+    user: process.env.MAILTRAPUSER,
+    pass: process.env.MAILTRAPPASS,
   },
 });
 
@@ -203,7 +203,7 @@ res.status(200).send({
 
 exports.forgotPassword = async (req, res) =>{
   try{
-    
+
     const {email} = req.body;
     const user = await User.findOne({email});
     if(!user)
