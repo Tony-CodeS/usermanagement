@@ -10,15 +10,15 @@ const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv').config()
 
 
+const mailgunTransport = require('nodemailer-mailgun-transport');
 const nodemailer = require('nodemailer');
-const transporter = nodemailer.createTransport({
-  host: 'smtp.mailtrap.io',
-  port: 587,
+const transporter = nodemailer.createTransport(
+    mailgunTransport({
   auth: {
-    user: process.env.MAILTRAPUSER,
-    pass: process.env.MAILTRAPPASS,
-  },
-});
+    api_key:process.env.APIKEY,
+    domain: process.env.DOMAIN
+  }
+}));
 
 
 
@@ -93,7 +93,7 @@ if (validationResult.error) {
       if (err) {
         console.error(err);
       } else {
-        console.log('Email sent:', info.response);
+        console.log('Email sent:', info);
       }
     });
    
@@ -147,7 +147,7 @@ exports.resendOtp = async (req, res) =>{
       if (err) {
         console.error(err);
       } else {
-        console.log('Email sent:', info.response);
+        console.log('Email sent:', info);
       }
     });
 
@@ -237,7 +237,7 @@ exports.forgotPassword = async (req, res) =>{
         if (err) {
           console.error(err);
         } else {
-          console.log('Email sent:', info.response);
+          console.log('Email sent:', info);
         }
       });
 

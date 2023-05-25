@@ -1,13 +1,37 @@
 
 const {Admin,User} = require('../model/Schema')
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const speakeasy = require('speakeasy')
+const path = require('path');
+const pug = require('pug');
+const crypto = require('crypto')
+const mailgunTransport = require('nodemailer-mailgun-transport');
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport(
+    mailgunTransport({
+  auth: {
+    api_key:process.env.APIKEY,
+    domain: process.env.DOMAIN
+  }
+}));
 // const {Manufacturer} = require('../model/manufacturerSchema')
 
 
 exports.addAdmin = async (req, res)=>{
  const  {email, password}  = req.body
  try{
-    const newAdmin = await Admin.create({email, password})
+  const admin = await Admin.findOne({email})
+  if(admin){
+    return res.status(400).json({
+      message:"Admin already exist"
+      })
+    }
+    const hash = await bcrypt.hash(password, 12)
+    const newAdmin = await Admin.create({email, password:hash})
+
+    delete newAdmin._doc.password
     res.status(200).send({
         date:newAdmin
     })
@@ -125,32 +149,37 @@ exports.adminforgotpassword = async (req, res) =>{
 }
 
 
-exports.changePassword = async (req, res) =>{
-  try{
-    const { otp, password} = req.body;
-    const admin = await Admin.findOne({ otp});
-    if(!admin)
-    return res.status(400).send({
-      message: 'Invalid OTP'
-      })
-      const salt = await bcrypt.genSalt(12);
-      const hash = await bcrypt.hash(password, salt);
-      admin.password = hash;
-      admin.otp = undefined
-      await admin.save();
-      res.status(200).send({
-        message: 'Password Changed'
-        })
-        }catch(err){
-          console.log(err)
-          }
-          }
+exports.adminchangePassword = async (req, res) => {
+  try {
+    const { otp,email, password } = req.body;
+    console.log(req.body)
+    const admin = await Admin.findOne({email:email}); // Construct the query object properly
+    console.log(admin);
+    if (!admin)  return res.status(400).send({ message: 'Invalid email' });
+    
+
+    if(admin.otp !== otp) res.status(400).send({ message: 'Invalid OTP' });
+    
+    const salt = await bcrypt.genSalt(12);
+    const hash = await bcrypt.hash(password, salt);
+    console.log(hash);
+    admin.password = hash;
+    admin.otp = undefined;
+    await admin.save();
+    
+    res.status(200).send({ message: 'Password Changed' });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
   
 
   exports.login= async (req, res) => {
   const { email, password } = req.body;
   try {
-   const admin = await admin.findOne({ email });
+   const admin = await Admin.findOne({ email });
    if (!admin) {
     return res.status(400).send({
     message: 'User not found'

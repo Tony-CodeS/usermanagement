@@ -10,7 +10,7 @@ exports.addDistributor = async (req, res) => {
       if (!mainDistributor) {
         return res.status(404).json({
           type: 'Not Found',
-          msg: 'Manufacturer not found',
+          msg: 'user not found',
         });
       }
   
@@ -18,7 +18,7 @@ exports.addDistributor = async (req, res) => {
       if (!newDistributor) {
         return res.status(404).json({
           type: 'Not Found',
-          msg: 'User not found',
+          msg: 'distributor not found',
         });
       }
   
@@ -253,7 +253,7 @@ exports.addDistributor = async (req, res) => {
   
       res.status(200).json({
         type: 'Success',
-        msg: 'Product added to the user product array',
+        msg: 'a new branch has been added to the user branches',
       });
     } catch (err) {
       console.log(err);
