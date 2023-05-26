@@ -11,8 +11,7 @@ router.post('/adminforgotpassword', AdminController.adminforgotpassword)
 router.post('/adminChangepassword', AdminController.adminchangePassword)
 router.post('/addAdmin', AdminController.addAdmin)
 router.delete('/removeUser/:adminId/:userId', verifyToken, AdminController.removeUser)
-// router.get('/users', verifyToken, AdminController.getallUsers)
-router.get('/users', AdminController.getallUsers)
+router.get('/users', verifyToken, AdminController.getallUsers)
 
 
 

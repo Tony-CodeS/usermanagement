@@ -8,10 +8,11 @@ const bcrypt = require('bcrypt')
 const speakeasy = require('speakeasy');
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv').config()
-
-
 const mailgunTransport = require('nodemailer-mailgun-transport');
 const nodemailer = require('nodemailer');
+
+
+
 const transporter = nodemailer.createTransport(
     mailgunTransport({
   auth: {
@@ -81,7 +82,7 @@ if (validationResult.error) {
 
     const templatePath = path.join(__dirname, '../utils/otptemplate.pug');
     const compiledTemplate = pug.compileFile(templatePath);
-    const html = compiledTemplate({ otp });
+    const html = compiledTemplate({ otp, email });
 
 
      transporter.sendMail({
@@ -93,7 +94,7 @@ if (validationResult.error) {
       if (err) {
         console.error(err);
       } else {
-        console.log('Email sent:', info);
+        console.log('Email sent:', info.status);
       }
     });
    
@@ -147,7 +148,7 @@ exports.resendOtp = async (req, res) =>{
       if (err) {
         console.error(err);
       } else {
-        console.log('Email sent:', info);
+        console.log('Email sent:', info.status);
       }
     });
 
@@ -237,7 +238,7 @@ exports.forgotPassword = async (req, res) =>{
         if (err) {
           console.error(err);
         } else {
-          console.log('Email sent:', info);
+          console.log('Email sent:', info.status);
         }
       });
 
