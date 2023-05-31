@@ -196,6 +196,7 @@ res.status(200).send({
   phone:user.phone,
   distributors:user.Distributor,
   manufacturer:user.Manufacturer,
+  user:user._id,
   token:token
   });
 
@@ -318,6 +319,7 @@ exports.login= async (req, res) => {
         phone:user.phone,
         distributors:user.Distributor,
         manufacturer:user.Manufacturer,
+        user:user._id,
         token:token
       });
     } catch (err) {
