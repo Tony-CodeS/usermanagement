@@ -190,7 +190,13 @@ await user.save()
 
 res.status(200).send({
   message: 'OTP verified',
-  token
+  email:user.email,
+  location:user.location,
+  products:user.products,
+  phone:user.phone,
+  distributors:user.Distributor,
+  manufacturer:user.Manufacturer,
+  token:token
   });
 
 
@@ -306,7 +312,13 @@ exports.login= async (req, res) => {
   
       return res.status(200).send({
         message: 'Login successful',
-        token
+        email:user.email,
+        location:user.location,
+        products:user.products,
+        phone:user.phone,
+        distributors:user.Distributor,
+        manufacturer:user.Manufacturer,
+        token:token
       });
     } catch (err) {
       console.log(err);
