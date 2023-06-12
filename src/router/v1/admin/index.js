@@ -25,7 +25,7 @@ router.post('/changepassword', Auth.changePassword)
 
 //General
 
-router.post('/addExistingDistributor/:userId',verifyToken, GeneralController.addDistributor)
+router.post('/addExistingDistributor/:userId', GeneralController.addDistributor)
 router.get('/allDistributor/:userId', verifyToken, GeneralController.getDistributors)
 router.get('/allManufacturer/:userId', verifyToken,  GeneralController.getManufacturer)
 router.delete('/removeDistributor/:manufacturerId/:distributorId', verifyToken, GeneralController.removeDistributor)

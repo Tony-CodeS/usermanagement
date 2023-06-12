@@ -22,6 +22,20 @@ exports.addDistributor = async (req, res) => {
         });
       }
   
+      if (mainDistributor.Distributor.includes(newDistributor._id)) {
+        return res.status(400).json({
+          type: 'Bad Request',
+          msg: 'Distributor already exists',
+        });
+      }
+
+      if (newDistributor.Manufacturer.includes(mainDistributor._id)) {
+        return res.status(400).json({
+          type: 'Bad Request',
+          msg: 'Main distributor already exists in the new distributor\'s list',
+        });
+      }
+      
       mainDistributor.Distributor.push(newDistributor._id);
       newDistributor.Manufacturer.push(mainDistributor._id);
   
