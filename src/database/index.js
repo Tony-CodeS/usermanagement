@@ -1,17 +1,17 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
 
-// const connectDB = ()=>{
-//     return new Promise ((resolve, reject)=>{
+// const connectDB = () => {
+//     return new Promise((resolve, reject) => {
 //         const option = {
-//             useNewUrlParser:true,
+//             useNewUrlParser: true,
 //             useUnifiedTopology: true,
 //         }
 
 //         mongoose
-//         .connect(process.env.DATABASE, option)
-//         .then((con) => resolve (con))
-//         .then((err) => reject(err))
+//             .connect(process.env.DATABASE, option)
+//             .then((con) => resolve(con))
+//             .then((err) => reject(err))
 //     })
 // }
 

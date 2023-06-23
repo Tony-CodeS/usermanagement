@@ -15,30 +15,36 @@ app.use(express.json())
 app.use(router)
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-  });
+  res.send('Hello World!');
+});
 
-const server = app.listen(PORT, () => {
-    console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
-  });
+// const server = app.listen(PORT, () => {
+//     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
+//   });
 
 
-  process.on("uncaughtException", (err) => {
-    console.log("UNCAUGHT EXCEPTIONS! 🔥 Shutting down...");
-    console.log(`${err.name} : ${err.message}`);
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTIONS! 🔥 Shutting down...");
+  console.log(`${err.name} : ${err.message}`);
+  process.exit(1);
+});
+
+
+//handling unhandledRejection
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED REJECTION! Shutting down...");
+  console.log(err.name, err.message);
+  server.close(() => {
     process.exit(1);
   });
+});
 
-
-   //handling unhandledRejection
-   process.on("unhandledRejection", (err) => {
-    console.log("UNHANDLED REJECTION! Shutting down...");
-    console.log(err.name, err.message);
-    server.close(() => {
-      process.exit(1);
-    });
-  });
-
-  connectDB().then((con)=>{
-    console.log('Connected To DataBase')
+connectDB().then((con) => {
+  console.log('Connected To DataBase')
+  app.listen(PORT, () => {
+    console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
+  }).catch((err) => {
+    console.error(err.message);
+    process.exit(1);
+  })
 })
