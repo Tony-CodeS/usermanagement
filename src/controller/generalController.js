@@ -10,6 +10,11 @@ exports.getSingleUser = async (req, res) => {
     })
 
     delete user._doc.password
+    delete user._doc.verificationStatus
+    delete user._doc.products
+    delete user._doc.Distributor
+    delete user._doc.Manufacturer
+    delete user._doc.otp
 
     res.status(200).send({
       success: true,
@@ -91,7 +96,7 @@ exports.getDistributors = async (req, res) => {
     }
 
     const distributorIds = mainDistributor.Distributor;
-    const distributors = await User.find({ _id: { $in: distributorIds } }).select("-password -otp");
+    const distributors = await User.find({ _id: { $in: distributorIds } }).select("-password -otp -verificationStatus -Distributor -Manufacturer -Branches");
 
     res.status(200).json({
       type: 'Success',
@@ -121,7 +126,7 @@ exports.getManufacturer = async (req, res) => {
     }
 
     const manufacturerIds = mainDistributor.Manufacturer;
-    const manufacturer = await User.find({ _id: { $in: manufacturerIds } });
+    const manufacturer = await User.find({ _id: { $in: manufacturerIds } }).select("-password -otp -verificationStatus -Distributor -Manufacturer -Branches");
 
     res.status(200).json({
       type: 'Success',
@@ -359,7 +364,7 @@ exports.getallbranches = async (req, res) => {
     res.status(200).send({
       message: 'all branches',
       data: {
-        branches: user.branches
+        branches: [user.location, ...user.branches]
       },
       status: true
     })
