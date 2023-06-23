@@ -1,6 +1,28 @@
 const {Admin,User} = require('../model/Schema')
 
 
+exports.getSingleUser = async(req, res) =>{
+  try{
+ const userId = req.params.userId;
+ const user =await User.findById(userId);
+ if(!user) return res.status(400).send({
+  success:false,
+  message:'user does not exist'
+ })
+
+ delete user._doc.password
+
+res.status(200).send({
+  success : true,
+  data:{
+    user:user
+  }
+})
+
+  }catch(err){
+    console.log(err.message)
+  }
+}
 exports.addDistributor = async (req, res) => {
     try {
       const userId = req.params.userId;
@@ -318,4 +340,134 @@ exports.addDistributor = async (req, res) => {
     }
   };
 
+  exports.getallbranches = async(req,res)=>{
+    try{
+      const userId = req.params.userId
+      const user = await User.findById(userId)
+      if(!user) return res.status(400).send({
+        message:'user not found',
+        status:false
+      })
+
+      res.status(200).send({
+        message:'all branches',
+        data:{
+            allBranches:user.branches
+        },
+        status:true
+      })
+    }catch(err){
+      console.log(err.message)
+    }
+  }
+
+
+  exports.getallProducts = async(req,res)=>{
+    try{
+      const userId = req.params.userId
+      const user = await User.findById(userId)
+      if(!user) return res.status(400).send({
+        message:'user not found',
+        status:false
+      })
+
+      res.status(200).send({
+        message:'all branches',
+        data:{
+            allProducts:user.products
+        },
+        status:true
+      })
+    }catch(err){
+      console.log(err.message)
+    }
+  }
+
+
+  exports.getDistributorDetail = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const distributorId = req.params.distributorId;
+      const user = await User.findById(userId);
   
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const distributor = user.Distributor.find((d) => d.equals(distributorId));
+  
+      if (!distributor) {
+        return res.status(404).json({ error: 'Distributor not found' });
+      }
+  
+      const distributorDetail = await User.findById(distributorId)
+      if(!distributorDetail) return res.status(400).send({
+        success : false,
+        msg :"No such Distributor"
+      })
+      
+      delete distributorDetail._doc.password
+      delete distributorDetail._doc.Distributor
+      delete distributorDetail._doc.Manufacturer
+
+      res.status(200).json({
+        success:'Distributor Details',
+        data: distributorDetail
+      });
+
+
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+  
+
+  exports.getManufacturerDetail = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const manufacturerId = req.params.manufacturerId;
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const manufacturer = user.Manufacturer.find((d) => d.equals(manufacturerId));
+  
+      if (!manufacturer) {
+        return res.status(404).json({ error: 'Distributor not found' });
+      }
+  
+      const manufacturerDetail = await User.findById(manufacturerId)
+      if(!manufacturerDetail) return res.status(400).send({
+        success : false,
+        msg :"No such Distributor"
+      })
+      
+      delete manufacturerDetail._doc.password
+      delete manufacturerDetail._doc.Distributor
+      delete manufacturerDetail._doc.Manufacturer
+
+      res.status(200).json({
+        success:'Distributor Details',
+        data: manufacturerDetail
+      });
+
+
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+  
+
+
+  
+
+  
+  
+
+  // account type flag
+  // brand ownwers and distributors
+  //
