@@ -1,7 +1,7 @@
 const joi = require('joi')
 
 exports.userSchema = joi.object({
-    email: joi.string().email("Invalid Email Address").required(),
+    email: joi.string().email().required(),
     organization: joi.string().required(),
     phone: joi.string().required(),
     cacNumber: joi.string().required(),

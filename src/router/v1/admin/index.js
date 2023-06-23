@@ -11,7 +11,6 @@ router.post('/admin/change-password', AdminController.adminchangePassword)
 router.post('/admin', AdminController.addAdmin)
 router.delete('/removeUser/:adminId/:userId', verifyToken, AdminController.removeUser)
 
-
 /// Authentication and authorization
 router.post('/login', Auth.login)
 router.post('/forgot-password', Auth.forgotPassword)
