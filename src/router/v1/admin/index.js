@@ -22,7 +22,8 @@ router.post('/change-password', Auth.changePassword)
 router.get('/users', verifyToken, AdminController.getallUsers)
 router.post('/users', Auth.signUp)
 
-router.post('/users/:userId', verifyToken, GeneralController.getSingleUser)
+router.get('/users/:userId', verifyToken, GeneralController.getSingleUser)
+// router.post('/users/:userId', verifyToken, GeneralController.getSingleUser)
 
 router.get('/users/:userId/distributors', verifyToken, GeneralController.getDistributors)
 router.post('/users/:userId/distributors', verifyToken, GeneralController.addDistributor)
