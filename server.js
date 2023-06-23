@@ -18,9 +18,17 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// const server = app.listen(PORT, () => {
-//     console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
-//   });
+let server;
+
+connectDB().then((con) => {
+  console.log('Connected To DataBase')
+  server = app.listen(PORT, () => {
+    console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
+  })
+}).catch((err) => {
+  console.error(err.message);
+  process.exit(1);
+})
 
 
 process.on("uncaughtException", (err) => {
@@ -38,13 +46,3 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
-
-connectDB().then((con) => {
-  console.log('Connected To DataBase')
-  app.listen(PORT, () => {
-    console.log(`SERVER IS RUNNING ON PORT ${PORT}`);
-  }).catch((err) => {
-    console.error(err.message);
-    process.exit(1);
-  })
-})
