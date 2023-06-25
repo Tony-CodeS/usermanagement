@@ -295,6 +295,7 @@ exports.login = async (req, res) => {
     return res.status(200).send({
       message: 'Login successful',
       email: user.email,
+      name: user.organization,
       // location: user.location,
       // products: user.products,
       // phone: user.phone,
