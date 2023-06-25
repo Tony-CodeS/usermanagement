@@ -429,10 +429,10 @@ exports.getDistributorDetail = async (req, res) => {
     delete distributorDetail._doc.password
     delete distributorDetail._doc.Distributor
     delete distributorDetail._doc.Manufacturer
-    delete user._doc.verificationStatus
-    delete user._doc.products
-    delete user._doc.otp
-    delete user._doc.__v
+    delete distributorDetail._doc.verificationStatus
+    delete distributorDetail._doc.products
+    delete distributorDetail._doc.otp
+    delete distributorDetail._doc.__v
 
     res.status(200).json({
       success: 'Distributor Details',
